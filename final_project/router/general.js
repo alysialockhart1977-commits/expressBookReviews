@@ -4,7 +4,6 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -84,8 +83,9 @@ getBooksByAuthor
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title', function (req, res) {
   const title = req.params.title;
+  let getBooksByTitle = new Promise ((resolve, reject) => {
   const bookKeys = Object.keys(books);
   const titleBooks = {};
 
@@ -94,7 +94,17 @@ public_users.get('/title/:title',function (req, res) {
         titleBooks[key] = books[key];
     }
 });    
-  return res.json(titleBooks);
+  if (Object.keys(titleBooks).length > 0) {
+    resolve(titleBooks);
+  } else {
+    reject("Title not found");
+  }
+});
+
+getBooksByTitle
+   .then(result => res.status(200).json(result))
+   .catch(error => res.status(404).json({ message: error}));
+
 });
 
 //  Get book review
