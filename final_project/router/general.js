@@ -21,7 +21,7 @@ public_users.post("/register", (req,res) => {
     password: password
   })
 
-  return res.status(200).json({message: "User successfully registered" });
+  return res.status(200).json({ message: "User successfully registered" });
 });
 
 // Get the book list available in the shop
@@ -110,7 +110,7 @@ getBooksByTitle
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn;
-  return res.json(books[isbn].reviews);
+  return res.status(200).json(books[isbn].reviews);
 });
 
 module.exports.general = public_users;
